@@ -107,7 +107,7 @@ extension CalculatorButton {
         case  .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .decimal:
             return Color.gray.opacity(0.5)
         case .divide, .multiply, .minus, .plus, .equals:
-            return .orange
+            return .pink
         default:
             return .gray
         }
@@ -117,7 +117,7 @@ extension CalculatorButton {
     var selectedBackgroundColor: Color {
         switch self {
         case .divide, .minus, .plus, .multiply:
-            return .white
+            return symbolColor
         default:
             return backgroundColor
         }
@@ -137,7 +137,7 @@ extension CalculatorButton {
     var selectedSymbolColor: Color {
         switch self {
         case .divide, .minus, .plus, .multiply:
-            return .orange
+            return backgroundColor
         default:
             return symbolColor
         }
