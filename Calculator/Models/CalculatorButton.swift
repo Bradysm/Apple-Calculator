@@ -107,7 +107,7 @@ extension CalculatorButton {
         case  .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .decimal:
             return Color.gray.opacity(0.5)
         case .divide, .multiply, .minus, .plus, .equals:
-            return .pink
+            return .limeGreen
         default:
             return .gray
         }
