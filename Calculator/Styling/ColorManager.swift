@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Custom SwiftUI Color extension
 extension Color {
     /// Lime Green Color used for buttons
     static let limeGreen = Color("LimeGreen")
