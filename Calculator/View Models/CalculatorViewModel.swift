@@ -21,13 +21,16 @@ final class CalculatorViewModel: ObservableObject {
     /// Current number being typed on screen
     @Published var numbersOnScreen = "0"
 
-    /// No selection for operator
+    /// operator selected on the screen
     @Published var operatorSelected = CalculatorButton.empty
+    
+    /// reperesnts the operator to use for the next calculation
     private var operatorToUse = CalculatorButton.empty
     
     private let MAX_DIGITS_ALLOWED = 9
     
     
+    /// function called when an operator is selected
     func select(operator binaryOperator: Operator) {
         assert(binaryOperator.isOperator)
         if binaryOperator == .equals {
@@ -38,32 +41,38 @@ final class CalculatorViewModel: ObservableObject {
         }
     }
     
+    /// function called when a number button is selected
+    /// this function will update the numbers shown on the screen
     func select(number: NumberButton) {
         assert(number.isNumberButton)
         
-        // if there is an operator selected then move the number over and remove teh operator from being selected
+        // operator has been selected
+        // move numberOnScreen to enteredNumber and add selected number to screen
+        // update selected operator
         if operatorSelected != .empty {
             enteredNumber = Double(numbersOnScreen) ?? 0.0
-            operatorToUse = operatorSelected
-            operatorSelected = .empty
+            setOperatorToUse(to: operatorSelected)
             numbersOnScreen = (number == .decimal) ? "0." : number.symbol
-        } else {
-            withAnimation {
-                // only allow more to be added if we aren't at max number
-                guard numbersOnScreen.count < MAX_DIGITS_ALLOWED && !numbersOnScreen.contains("e") else {
-                    return
-                }
-                
-                // only add decimal if it's not entered already
-                if number == .decimal {
-                    if  !numbersOnScreen.contains(number.symbol) {
-                        numbersOnScreen.append(number.symbol)
-                    }
-                } else if numbersOnScreen == "0" {
-                    numbersOnScreen = number.symbol
-                } else {
+            return
+        }
+        
+        // operator isn't selected, add the number to screen
+        withAnimation {
+            // only allow more to be added if we aren't at max number and not scientific notation
+            guard numbersOnScreen.count < MAX_DIGITS_ALLOWED && !numbersOnScreen.contains("e") else {
+                return
+            }
+            
+            // only add decimal if it's not entered already
+            if number == .decimal {
+                // ensure there isn't a decimal already entered
+                if  !numbersOnScreen.contains(number.symbol) {
                     numbersOnScreen.append(number.symbol)
                 }
+            } else if numbersOnScreen == "0" {
+                numbersOnScreen = number.symbol
+            } else {
+                numbersOnScreen.append(number.symbol)
             }
         }
     }
@@ -71,27 +80,27 @@ final class CalculatorViewModel: ObservableObject {
     /// Takes the percent of the entered number on the screen
     func percent() {
         let percentageValue = (Double(numbersOnScreen) ?? 0.0) / 100
-        numbersOnScreen = String(NSNumber(value: percentageValue).stringValue)
-        
-        // display scientific notation if the
-        if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
-            numbersOnScreen = percentageValue.scientificFormatted
-        }
+        updateNumbersOnScreen(to: percentageValue)
     }
     
+    /// negates the entered number on the screen
     func negate() {
-        let negation = (Double(numbersOnScreen) ?? 0.0) * -1
-        numbersOnScreen = String(NSNumber(value: negation).stringValue)
-        
-        // display scientific notation if the
-        if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
-            numbersOnScreen = negation.scientificFormatted
-        }
+        let negatedNumberOnScreen = (Double(numbersOnScreen) ?? 0.0) * -1
+        updateNumbersOnScreen(to: negatedNumberOnScreen)
     }
     
+    /// clears the calculator to defaults
+    func clearCalculator() {
+        calculatedValue = 0.0
+        enteredNumber = 0.0
+        numbersOnScreen = "0"
+        operatorSelected = .empty
+    }
+    
+    // MARK: - Helper functions
     /// function to be called when equals is selected
     private func calculateResult() {
-        // make sure an operator is sleected
+        // make sure an operator is sleected to use
         guard operatorToUse != .empty else {
             return
         }
@@ -109,25 +118,33 @@ final class CalculatorViewModel: ObservableObject {
             return
         }
         
-        // update the entered number to be the previous calculated value
-        numbersOnScreen = String(NSNumber(value: calculatedValue).stringValue)
+        updateNumbersOnScreen(to: calculatedValue)
         
-        // display scientific notation if the
-        if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
-            numbersOnScreen = calculatedValue.scientificFormatted
-        }
-        
+        // move the calculated number to the entered number
         enteredNumber = calculatedValue
         operatorToUse = .empty
     }
+   
+    /// Updates the numbers on the screen to the given value
+    /// if the value is too large, then it's displayed in scientific notation
+    private func updateNumbersOnScreen(to value: Double) {
+        // update the entered number to be the previous calculated value
+        numbersOnScreen = String(NSNumber(value: value).stringValue)
+        
+        // display scientific notation if the number is too large to display
+        if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
+            numbersOnScreen = calculatedValue.scientificFormatted
+        }
+    }
     
-    func clearCalculator() {
-        calculatedValue = 0.0
-        enteredNumber = 0.0
-        numbersOnScreen = "0"
+    /// Sets the `operatorToUse` to the `selectedOperator` and updates the
+    /// `operatorSelected` to empty
+    private func setOperatorToUse(to selectedOperator: Operator) {
+        operatorToUse = selectedOperator
         operatorSelected = .empty
     }
     
+    // MARK: - Font
     var font: Font {
         let size: CGFloat = numbersOnScreen.count > 6 ? 56 : 96
         return .system(size: size, weight: .light, design: Font.Design.default)
@@ -135,6 +152,7 @@ final class CalculatorViewModel: ObservableObject {
 }
 
 
+// MARK: - Scientific Notation
 private extension Formatter {
     static let scientific: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -145,7 +163,7 @@ private extension Formatter {
     }()
 }
 
-extension Numeric {
+private extension Numeric {
     var scientificFormatted: String {
         return Formatter.scientific.string(for: self) ?? ""
     }
