@@ -147,7 +147,7 @@ final class CalculatorViewModel: ObservableObject {
     
     // MARK: - Font
     var font: Font {
-        let size: CGFloat = numbersOnScreen.count > 6 ? 56 : 96
+        let size: CGFloat = numbersOnScreen.count > 6 ? 60 : 96
         return .system(size: size, weight: .light, design: Font.Design.default)
     }
 }
