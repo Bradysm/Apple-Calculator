@@ -10,11 +10,18 @@ import SwiftUI
 
 
 enum CalculatorButton {
-    /// Button types
-    case zero, one, two, three, four, five, six, seven, eight, nine, decimal,
-         divide, multiply, minus, plus, equals,
-         ac, percentage, negation,
-         na
+    // MARK: Button Types
+    /// Number button types
+    case zero, one, two, three, four, five, six, seven, eight, nine, decimal
+    
+    /// Operator button types
+    case divide, multiply, minus, plus, equals
+    
+    /// Action symbol types
+    case ac, percentage, negation
+    
+    /// value used for nil states
+    case na
     
     var symbol: String {
         switch self {
