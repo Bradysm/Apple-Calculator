@@ -5,7 +5,7 @@ Complete remake of the Apple Calculator in **SwiftUI** for my Course on [unwrapp
 
 If you like this project, please ⭐⭐ star ⭐⭐ it and share it with your friends who are learning SwiftUI
 
-If you learned something from this project please consider [donating](https://www.buymeacoffee.com/BradyMurphy) a ☕ coffee ☕ to help me **make more content** for YOU
+If you learned something from this project please consider [donating](https://www.buymeacoffee.com/BradyMurphy) a ☕ to help me **make more content** for YOU
 
 ![Main-Banner-Image](https://github.com/Bradysm/Apple-Calculator/blob/master/imgs/Calculator2X.png?raw=true)
 
