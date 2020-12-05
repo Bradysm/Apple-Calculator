@@ -59,7 +59,8 @@ final class CalculatorViewModel: ObservableObject {
         // operator isn't selected, add the number to screen
         withAnimation {
             // only allow more to be added if we aren't at max number and not scientific notation
-            guard numbersOnScreen.count < MAX_DIGITS_ALLOWED && !numbersOnScreen.contains("e") else {
+            guard numbersOnScreen.count < CalculatorViewModel.MAX_DIGITS_ALLOWED,
+                  !numbersOnScreen.contains("e") else {
                 return
             }
             
