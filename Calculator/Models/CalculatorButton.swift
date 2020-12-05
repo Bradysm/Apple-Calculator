@@ -14,7 +14,7 @@ enum CalculatorButton {
     case zero, one, two, three, four, five, six, seven, eight, nine, decimal,
          divide, multiply, minus, plus, equals,
          ac, percentage, negation,
-         empty
+         na
     
     var symbol: String {
         switch self {
@@ -56,11 +56,44 @@ enum CalculatorButton {
             return "+/-"
         case .decimal:
             return "."
-        case .empty:
+        case .na:
             return ""
         }
     }
+}
+ 
+// MARK: Boolean Properties
+extension CalculatorButton {
+    var isOperator: Bool {
+        switch self {
+        case .divide, .equals, .minus, .plus, .multiply:
+            return true
+        default:
+            return false
+        }
+    }
     
+    var isNumberButton: Bool {
+        switch self {
+        case .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .decimal:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isNumberAction: Bool {
+        switch self {
+        case .ac, .percentage, .negation:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+// MARK: Colors
+extension CalculatorButton {
     /// returns the color of the button based on the type of button
     var backgroundColor: Color {
         switch self {
@@ -100,33 +133,6 @@ enum CalculatorButton {
             return .orange
         default:
             return symbolColor
-        }
-    }
-    
-    var isOperator: Bool {
-        switch self {
-        case .divide, .equals, .minus, .plus, .multiply:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var isNumberButton: Bool {
-        switch self {
-        case .zero, .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .decimal:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var isNumberAction: Bool {
-        switch self {
-        case .ac, .percentage, .negation:
-            return true
-        default:
-            return false
         }
     }
 }

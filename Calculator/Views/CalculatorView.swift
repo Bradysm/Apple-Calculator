@@ -22,8 +22,10 @@ struct CalculatorView: View {
     }
 }
 
+#if DEBUG
 struct CalculatorView_Previews: PreviewProvider {
     static var previews: some View {
         CalculatorView()
     }
 }
+#endif

@@ -22,10 +22,10 @@ final class CalculatorViewModel: ObservableObject {
     @Published var numbersOnScreen = "0"
 
     /// operator selected on the screen
-    @Published var operatorSelected = CalculatorButton.empty
+    @Published var operatorSelected = CalculatorButton.na
     
     /// reperesnts the operator to use for the next calculation
-    private var operatorToUse = CalculatorButton.empty
+    private var operatorToUse = CalculatorButton.na
     
     private let MAX_DIGITS_ALLOWED = 9
     
@@ -49,7 +49,7 @@ final class CalculatorViewModel: ObservableObject {
         // operator has been selected
         // move numberOnScreen to enteredNumber and add selected number to screen
         // update selected operator
-        if operatorSelected != .empty {
+        if operatorSelected != .na {
             enteredNumber = Double(numbersOnScreen) ?? 0.0
             setOperatorToUse(to: operatorSelected)
             numbersOnScreen = (number == .decimal) ? "0." : number.symbol
@@ -94,14 +94,14 @@ final class CalculatorViewModel: ObservableObject {
         calculatedValue = 0.0
         enteredNumber = 0.0
         numbersOnScreen = "0"
-        operatorSelected = .empty
+        operatorSelected = .na
     }
     
     // MARK: - Helper functions
     /// function to be called when equals is selected
     private func calculateResult() {
         // make sure an operator is sleected to use
-        guard operatorToUse != .empty else {
+        guard operatorToUse != .na else {
             return
         }
         
@@ -122,7 +122,7 @@ final class CalculatorViewModel: ObservableObject {
         
         // move the calculated number to the entered number
         enteredNumber = calculatedValue
-        operatorToUse = .empty
+        operatorToUse = .na
     }
    
     /// Updates the numbers on the screen to the given value
@@ -141,7 +141,7 @@ final class CalculatorViewModel: ObservableObject {
     /// `operatorSelected` to empty
     private func setOperatorToUse(to selectedOperator: Operator) {
         operatorToUse = selectedOperator
-        operatorSelected = .empty
+        operatorSelected = .na
     }
     
     // MARK: - Font

@@ -14,7 +14,7 @@ struct CalculatorButtonView: View {
     let action: () -> Void
     
     init(calculatorButton: CalculatorButton,
-         selectedButton: Binding<CalculatorButton> = .constant(.empty),
+         selectedButton: Binding<CalculatorButton> = .constant(.na),
          action: @escaping () -> Void) {
         self.calculatorButton = calculatorButton
         self._selectedButton = selectedButton
@@ -43,6 +43,7 @@ struct CalculatorButtonView: View {
     }
 }
 
+#if DEBUG
 struct CalculatorButtonView_Previews: PreviewProvider {
     static var previews: some View {
         CalculatorButtonView(calculatorButton: .equals, selectedButton: .constant(.equals)) {
@@ -50,3 +51,4 @@ struct CalculatorButtonView_Previews: PreviewProvider {
         }
     }
 }
+#endif
