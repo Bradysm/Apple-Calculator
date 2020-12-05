@@ -133,7 +133,7 @@ final class CalculatorViewModel: ObservableObject {
         
         // display scientific notation if the number is too large to display
         if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
-            numbersOnScreen = calculatedValue.scientificFormatted
+            numbersOnScreen = value.scientificFormatted
         }
     }
     
