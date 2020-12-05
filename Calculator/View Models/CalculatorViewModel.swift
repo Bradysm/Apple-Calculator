@@ -27,7 +27,7 @@ final class CalculatorViewModel: ObservableObject {
     /// reperesnts the operator to use for the next calculation
     private var operatorToUse = CalculatorButton.na
     
-    private let MAX_DIGITS_ALLOWED = 9
+    private static let MAX_DIGITS_ALLOWED = 9
     
     
     /// function called when an operator is selected
@@ -132,7 +132,7 @@ final class CalculatorViewModel: ObservableObject {
         numbersOnScreen = String(NSNumber(value: value).stringValue)
         
         // display scientific notation if the number is too large to display
-        if numbersOnScreen.count > MAX_DIGITS_ALLOWED {
+        if numbersOnScreen.count > CalculatorViewModel.MAX_DIGITS_ALLOWED {
             numbersOnScreen = value.scientificFormatted
         }
     }
