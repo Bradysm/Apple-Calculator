@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 final class CalculatorViewModel: ObservableObject {
-    typealias Operator = CalculatorButton
+    typealias OperatorButton = CalculatorButton
     typealias NumberButton = CalculatorButton
     
     /// Calculated value to be shown if operator selected is equals
@@ -31,7 +31,7 @@ final class CalculatorViewModel: ObservableObject {
     
     
     /// function called when an operator is selected
-    func select(operator binaryOperator: Operator) {
+    func select(operator binaryOperator: OperatorButton) {
         assert(binaryOperator.isOperator)
         if binaryOperator == .equals {
             calculateResult()
@@ -56,7 +56,7 @@ final class CalculatorViewModel: ObservableObject {
             return
         }
         
-        // operator isn't selected, add the number to screen
+        // operator isn't selected, add the number to screen with an animation
         withAnimation {
             // only allow more to be added if we aren't at max number and not scientific notation
             guard numbersOnScreen.count < CalculatorViewModel.MAX_DIGITS_ALLOWED,
@@ -139,8 +139,8 @@ final class CalculatorViewModel: ObservableObject {
     }
     
     /// Sets the `operatorToUse` to the `selectedOperator` and updates the
-    /// `operatorSelected` to empty
-    private func setOperatorToUse(to selectedOperator: Operator) {
+    /// `operatorSelected` to na to update the screen back to the deselected state
+    private func setOperatorToUse(to selectedOperator: OperatorButton) {
         operatorToUse = selectedOperator
         operatorSelected = .na
     }
