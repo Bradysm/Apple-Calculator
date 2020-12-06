@@ -70,7 +70,7 @@ final class CalculatorViewModel: ObservableObject {
                 if  !numbersOnScreen.contains(number.symbol) {
                     numbersOnScreen.append(number.symbol)
                 }
-            } else if numbersOnScreen == "0" {
+            } else if Double(numbersOnScreen) ?? 0.0 == 0 {
                 numbersOnScreen = number.symbol
             } else {
                 numbersOnScreen.append(number.symbol)
